@@ -12,36 +12,46 @@
     let counter = 0;
 
     function App() {
-      const [minutes, setMinutes] = React.useState(0);
+      const [amount, setMinutes] = React.useState(0);
+      const [flipped, setFlipped] = React.useState(true);
       const onChange = (event) => {
         setMinutes(event.target.value);
       };
-      function reset(){
+      function reset() {
         setMinutes(0);
       }
+      const onFlip = () => {
+        reset();
+        setFlipped((current) => !current);
+        
+      };
       return (
         <div>
           <h3 className="hi">Super Converter</h3>
           <div>
             <label htmlFor="minutes">minutes</label>
             <input
-              value={minutes}
+            value={flipped ? amount : amount * 60}
               id="minutes"
               placeholder="Minutes"
               type="number"
               onChange={onChange}
+              disabled={!flipped}
             />
           </div>
           <div>
             <label htmlFor="hours">hours</label>
             <input
-              value={Math.round(minutes / 60)}
+              value={!flipped ? amount : Math.round(amount / 60)}
               id="hours"
               placeholder="Hours"
               type="number"
+              disabled={flipped}
+              onChange={onChange}
             />
           </div>
           <button onClick={reset}>Reset</button>
+          <button onClick={onFlip}>Flip</button>
         </div>
       );
     }
