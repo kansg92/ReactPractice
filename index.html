@@ -10,14 +10,12 @@
   <script type="text/babel">
     const root = document.getElementById("root");
     let counter = 0;
-    function countUp() {
-      // code
-    }
 
     function App() {
       const [counter, setCounter] = React.useState(0);
       const onClick = () => {
-        setCounter(counter + 1);
+        //setCounter(counter + 1);            // 과거 값을 기준으로 계산
+        setCounter((current) => current + 1); // 현재 state의 값을 기준으로 계산 --> 간헐적으로나오는 버그에서 더 안전하다.
       };
       return (
         <div>
