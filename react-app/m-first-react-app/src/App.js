@@ -6,6 +6,9 @@ function App() {
   return (
     <Router>
       <Routes>
+      <Route>
+          <Route path="hello" element={<h1>Hello</h1>} />
+        </Route>
         <Route>
           <Route path="movie" element={<Detail />} />
         </Route>
