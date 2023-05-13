@@ -1,33 +1,23 @@
 import { useState, useEffect } from "react";
 
-function App() {
-  const [counter, setValue] = useState(0);
-  const [keyword, setKeyword] = useState("");
-  const onClick = () => setValue((prev) => prev + 1);
-  const onChange = (event) => setKeyword(event.target.value);
-  //console.log("i run all the time");
+function Hello() {
+  function effecFn (){
+    console.log("I'm here! :)");
+  }
   useEffect(() => {
-    console.log("I run only once.");
+    console.log("I'm here! :)");                // 컴포넌트 발생할때 실행
+    return () => console.log("Bye Bye... :(");  // 컴포넌트 사라질때 실행
   }, []);
-  useEffect(()=>{
-    console.log("I run when 'keyword' chages.");
-  }, [keyword]);
-  useEffect(()=>{
-    console.log("I run when 'counter' chages.");
-  }, [counter]);
-  useEffect(()=>{
-    console.log("I run when 'keyword' & 'counter' chages.")
-  }, [keyword, counter])
+  return <h1>Hello</h1>;
+}
+
+function App() {
+  const [showing, setShowing] = useState(false);
+  const onClick = () => setShowing((prev) => !prev);
   return (
     <div>
-      <input
-        value={keyword}
-        onChange={onChange}
-        type="text"
-        placeholder="Search here..."
-      />
-      <h1>{counter}</h1>
-      <button onClick={onClick}>click me</button>
+      {showing ? <Hello /> : null}
+      <button onClick={onClick}>{showing ? "hide" : "Show"}</button>
     </div>
   );
 }
