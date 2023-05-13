@@ -6,115 +6,50 @@
   </body>
   <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    const root = document.getElementById("root");
-    let counter = 0;
-
-    function MinutesToHours() {
-      const [amount, setAmount] = React.useState(0);
-      const [flipped, setFlipped] = React.useState(true);
-      const onChange = (event) => {
-        setAmount(event.target.value);
-      };
-      function reset() {
-        setAmount(0);
-      }
-      const onFlip = () => {
-        reset();
-        setFlipped((current) => !current);
-      };
+    // functuon 의 props(objec형태임)는 오로지 하나의 인자만 들어 갈 수 있다.
+    // props.banana -> App에서 정의한 인자 값이 들어간다.
+    function Btn({ banana, changeValue, fontSize = 13 }) {
+      console.log(banana, "was rendered");
       return (
-        <div>
-          <div>
-            <label htmlFor="minutes">minutes</label>
-            <input
-              value={flipped ? amount : amount * 60}
-              id="minutes"
-              placeholder="Minutes"
-              type="number"
-              onChange={onChange}
-              disabled={!flipped}
-            />
-          </div>
-          <div>
-            <label htmlFor="hours">hours</label>
-            <input
-              value={!flipped ? amount : Math.round(amount / 60 * 10) /10}
-              id="hours"
-              placeholder="Hours"
-              type="number"
-              disabled={flipped}
-              onChange={onChange}
-            />
-          </div>
-          <button onClick={reset}>Reset</button>
-          <button onClick={onFlip}>Flip</button>
-        </div>
+        <button
+          onClick={changeValue}
+          style={{
+            backgroundColor: "coral",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+            fontSize: fontSize,
+          }}
+        >
+          {banana}
+        </button>
       );
     }
-    function KmToMiles() {
-      const [amount, setAmount] = React.useState(0);
-      const [flipped, setFlipped] = React.useState(true);
-      const onChange = (event) => {
-        setAmount(event.target.value);
-      };
-      function reset() {
-        setAmount(0);
-      }
-      const onFlip = () => {
-        reset();
-        setFlipped((current) => !current);
-      };
-      return (
-        <div>
-          <div>
-            <label htmlFor="Km">Km</label>
-            <input
-              value={flipped ? amount : amount / 0.621371}
-              id="Km"
-              placeholder="Km"
-              type="number"
-              onChange={onChange}
-              disabled={!flipped}
-            />
-          </div>
-          <div>
-            <label htmlFor="Miles">Miles</label>
-            <input
-              value={!flipped ? amount : amount * 0.621371}
-              id="Miles"
-              placeholder="Miles"
-              type="number"
-              disabled={flipped}
-              onChange={onChange}
-            />
-          </div>
-          <button onClick={reset}>Reset</button>
-          <button onClick={onFlip}>Flip</button>
-        </div>
-      );
+    Btn.protoTypes = {
+      banana : PropTypes.string,
+      fontSize : PropTypes.number,
     }
-
+    const MemorizedBtn = React.memo(Btn);
     function App() {
-      const [index, setIndex] = React.useState("0");
-      const onSelect = (event) => {
-        setIndex(event.target.value);
-      };
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
       return (
         <div>
-          <h3 className="hi">Super Converter</h3>
-          <select value={index} onChange={onSelect}>
-            <option value="0">Minutes & Hours</option>
-            <option value="1">Km & Miles</option>
-          </select>
-          <hr />
-          {index === "0" ? <MinutesToHours /> : null}
-          {index === "1" ? <KmToMiles /> : null}
+          <MemorizedBtn
+            banana={value}
+            fontSize={18}
+             changeValue={changeValue}
+          />
+          <MemorizedBtn banana="Continue" fontSize={18} />
         </div>
       );
     }
 
+    const root = document.getElementById("root");
     ReactDOM.render(<App />, root);
   </script>
 </html>
